@@ -4,10 +4,10 @@ import feathersSocketio from '@feathersjs/socketio-client';
 
 import { config } from './config';
 
-const client = feathers();
+const verifierClient = feathers();
 
-const socket = socketio(config.serverUrl);
+const socket = socketio(config.verifierServerUrl);
 
-client.configure(feathersSocketio(socket));
+verifierClient.configure(feathersSocketio(socket));
 
-export { client };
+export { verifierClient };
