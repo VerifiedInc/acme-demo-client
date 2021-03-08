@@ -27,7 +27,7 @@ describe('session action creators', () => {
 
       it(`dispatches a ${SessionActionType.CREATE_SESSION} action`, async () => {
         mockCreate.mockResolvedValueOnce(dummySession);
-        createSession()(dispatch);
+        await createSession()(dispatch);
         expect(dispatch.mock.calls[0][0]).toEqual({ type: SessionActionType.CREATE_SESSION });
       });
 
