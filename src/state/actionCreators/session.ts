@@ -5,7 +5,7 @@ import { SessionActionType } from '../actionTypes/session';
 import { SessionAction, ResetSessionStateAction } from '../actions/session';
 
 export const createSession = () => {
-  return async (dispatch: Dispatch<SessionAction>) => {
+  return async (dispatch: Dispatch<SessionAction>): Promise<void> => {
     dispatch({ type: SessionActionType.CREATE_SESSION });
 
     const service = client.service('session');

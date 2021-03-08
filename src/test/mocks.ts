@@ -3,7 +3,9 @@ import {
   DemoPresentationRequestCreateOptions,
   DemoSession,
   DemoPresentationDto,
-  DemoNoPresentationDto
+  DemoNoPresentationDto,
+  DemoUserWithoutPassword,
+  DemoUserCreateOptions
 } from '@unumid/demo-types';
 import { Presentation, NoPresentation, PresentationRequestPostDto } from '@unumid/types';
 import { v4 } from 'uuid';
@@ -179,4 +181,16 @@ export const dummyDemoNoPresentationDto: DemoNoPresentationDto = {
   createdAt: now,
   updatedAt: now,
   isVerified: true
+};
+
+export const dummyUserCreateOptions: DemoUserCreateOptions = {
+  email: 'test@unum.id',
+  password: 'test'
+};
+
+export const dummyUser: DemoUserWithoutPassword = {
+  email: dummyUserCreateOptions.email,
+  uuid: v4(),
+  createdAt: now,
+  updatedAt: now
 };

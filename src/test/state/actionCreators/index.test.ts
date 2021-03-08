@@ -2,6 +2,7 @@ import { resetState } from '../../../state/actionCreators';
 import { PresentationActionType } from '../../../state/actionTypes/presentation';
 import { PresentationRequestActionType } from '../../../state/actionTypes/presentationRequest';
 import { SessionActionType } from '../../../state/actionTypes/session';
+import { UserActionType } from '../../../state/actionTypes/user';
 
 describe('combined action creators', () => {
   describe('resetState', () => {
@@ -20,6 +21,10 @@ describe('combined action creators', () => {
 
     it('dispatches a ResetSessionStateAction', () => {
       expect(dispatch).toBeCalledWith({ type: SessionActionType.RESET_SESSION_STATE });
+    });
+
+    it('dispatches a ResetUserStateAction', () => {
+      expect(dispatch).toBeCalledWith({ type: UserActionType.RESET_USER_STATE });
     });
   });
 });
