@@ -5,9 +5,16 @@ import feathersSocketio from '@feathersjs/socketio-client';
 import { config } from './config';
 
 const verifierClient = feathers();
+const issuerClient = feathers();
 
-const socket = socketio(config.verifierServerUrl);
+const verifierSocket = socketio(config.verifierServerUrl);
+const issuerSocket = socketio(config.issuerServerUrl);
 
-verifierClient.configure(feathersSocketio(socket));
+verifierClient.configure(feathersSocketio(verifierSocket));
 
-export { verifierClient };
+issuerClient.configure(feathersSocketio(issuerSocket));
+issuerClient.configure(feathers.authentication({
+  storage: window.localStorage
+}));
+
+export { verifierClient, issuerClient };
