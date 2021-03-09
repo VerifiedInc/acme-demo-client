@@ -19,6 +19,7 @@ html {
 body {
   margin: 0;
   background-color: var(--secondary-background-color);
+  font-family: "Open Sans"
 }
 
 h1 {
@@ -53,4 +54,9 @@ h3 {
     font-size: 30px;
     font-weight: 700;
   }
+}
+
+@font-face {
+  font-family: 'Silom';
+  src: url(./assets/fonts/Silom.ttf) format('truetype');
 }
