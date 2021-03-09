@@ -1,0 +1,19 @@
+.unum-id {
+  font-family: Lato;
+  padding: 100px;
+  text-align: left;
+}
+
+.unum-id h1, .unum-id h2 {
+  font-family: Playfair Display;
+}
+
+.unum-id a {
+  color: var(--unuimd-green);
+}
+
+@media (max-width: 767px) {
+  .unum-id {
+    padding: 20px;
+  }
+}
