@@ -8,7 +8,7 @@ import Declined from './Declined';
 
 import AltHeader from './Header/AltHeader';
 import PrimaryHeader from './Header/PrimaryHeader';
-import Signup from './Signup';
+import Authentication from './Authentication';
 
 const App: FC = () => {
   const { createSession } = useActionCreators();
@@ -25,7 +25,7 @@ const App: FC = () => {
       <BrowserRouter>
         <Route exact path='/'>
           <AltHeader />
-          <Signup />
+          <Authentication />
         </Route>
         <Route path='/route1'>
           <PrimaryHeader />
