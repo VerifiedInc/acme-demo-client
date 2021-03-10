@@ -70,12 +70,12 @@ const Register: FC = () => {
             <>
               <h2>2. Install ACME App</h2>
               <p>
-                We sent an installation link to {email}.
+                We sent an installation link to {email}.&nbsp;
                 <BoldFont>Click the link to install the app. </BoldFont>
                 The app will pre-fill your email and a dummy password so you can log in.
               </p>
               <p>
-                The app will ask you for your permission to send push notifications.
+                The app will ask you for your permission to send push notifications.&nbsp;
                 <BoldFont>This is optional, </BoldFont>
                 but it will allow you to see how users can authenticate with push notifications.
               </p>
