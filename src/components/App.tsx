@@ -9,6 +9,9 @@ import Declined from './Declined';
 import AltHeader from './Header/AltHeader';
 import PrimaryHeader from './Header/PrimaryHeader';
 import Authentication from './Authentication';
+import Register from './Register';
+import Unumid from './Layout/Unumid';
+import Acme from './Layout/Acme';
 
 const App: FC = () => {
   const { createSession } = useActionCreators();
@@ -24,11 +27,18 @@ const App: FC = () => {
     <div>
       <BrowserRouter>
         <Route exact path='/'>
-          <AltHeader />
-          <Authentication />
+          <Acme>
+            <AltHeader />
+            <Authentication />
+          </Acme>
         </Route>
         <Route path='/route1'>
           <PrimaryHeader />
+        </Route>
+        <Route path='/register'>
+          <Unumid>
+            <Register />
+          </Unumid>
         </Route>
         <Route path='/authenticated'>
           <PrimaryHeader />
