@@ -37,4 +37,12 @@
   .unum-id {
     padding: 20px;
   }
+
+  .unum-id h1 {
+    font-size: 32px;
+  }
+
+  .unum-id h2 {
+    font-size: 24px;
+  }
 }
