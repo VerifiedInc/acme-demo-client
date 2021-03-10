@@ -10,6 +10,7 @@ import AltHeader from './Header/AltHeader';
 import PrimaryHeader from './Header/PrimaryHeader';
 import Authentication from './Authentication';
 import Register from './Register';
+import Login from './Login';
 import Unumid from './Layout/Unumid';
 import Acme from './Layout/Acme';
 
@@ -38,6 +39,11 @@ const App: FC = () => {
         <Route path='/register'>
           <Unumid>
             <Register />
+          </Unumid>
+        </Route>
+        <Route path='/login'>
+          <Unumid>
+            <Login />
           </Unumid>
         </Route>
         <Route path='/authenticated'>
