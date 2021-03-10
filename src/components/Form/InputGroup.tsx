@@ -2,6 +2,7 @@ import { FC, ChangeEventHandler } from 'react';
 
 import Required from './Required';
 import './InputGroup.css';
+import BoldFont from '../Layout/BoldFont';
 
 export interface Props {
   disabled?: boolean;
@@ -33,7 +34,7 @@ const InputGroup: FC<Props> = ({
   <div className='input-group'>
     <label htmlFor={inputId}>
       <div>
-        <div className='input-group-label'>{required && <Required />}{labelText}</div>
+        <div className='input-group-label'>{required && <Required />}<BoldFont>{labelText}</BoldFont></div>
         <input
           type={type}
           id={inputId}
@@ -45,7 +46,7 @@ const InputGroup: FC<Props> = ({
         />
       </div>
       <div className='input-explainer'>
-        <span className='bold'>{explainerBoldText}&nbsp;</span>
+        <BoldFont>{explainerBoldText}&nbsp;</BoldFont>
         {explainerText}
       </div>
     </label>
