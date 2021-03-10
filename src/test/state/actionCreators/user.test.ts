@@ -3,7 +3,7 @@ import { GeneralError } from '@feathersjs/errors';
 import { createUser, resetUserState } from '../../../state/actionCreators/user';
 import { UserActionType } from '../../../state/actionTypes/user';
 import { dummyUser, dummyUserCreateOptions } from '../../mocks';
-import { verifierClient } from '../../../feathers';
+import { issuerClient } from '../../../feathers';
 
 jest.mock('../../../feathers');
 const mockCreate = jest.fn();
@@ -18,7 +18,7 @@ describe('user action creators', () => {
       const dispatch = jest.fn();
 
       beforeEach(() => {
-        (verifierClient.service as unknown as jest.Mock).mockReturnValue({ create: mockCreate });
+        (issuerClient.service as unknown as jest.Mock).mockReturnValue({ create: mockCreate });
       });
 
       it(`dispatches a ${UserActionType.CREATE_USER} action`, async () => {
@@ -33,7 +33,7 @@ describe('user action creators', () => {
       it('creates a user', async () => {
         mockCreate.mockResolvedValueOnce(dummyUser);
         await createUser(dummyUserCreateOptions)(dispatch);
-        expect(verifierClient.service).toBeCalledWith('user');
+        expect(issuerClient.service).toBeCalledWith('user');
         expect(mockCreate).toBeCalledWith(dummyUserCreateOptions);
       });
 
