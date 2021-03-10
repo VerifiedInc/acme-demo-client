@@ -1,11 +1,13 @@
 import { GeneralError } from '@feathersjs/errors';
 
 import { createUser, resetUserState } from '../../../state/actionCreators/user';
+import { login } from '../../../state/actionCreators/auth';
 import { UserActionType } from '../../../state/actionTypes/user';
 import { dummyUser, dummyUserCreateOptions } from '../../mocks';
 import { issuerClient } from '../../../feathers';
 
 jest.mock('../../../feathers');
+jest.mock('../../../state/actionCreators/auth');
 const mockCreate = jest.fn();
 
 describe('user action creators', () => {
@@ -44,6 +46,12 @@ describe('user action creators', () => {
           type: UserActionType.CREATE_USER_SUCCESS,
           payload: dummyUser
         });
+      });
+
+      it('logs in the created user', async () => {
+        mockCreate.mockResolvedValueOnce(dummyUser);
+        await createUser(dummyUserCreateOptions)(dispatch);
+        expect(login).toBeCalled();
       });
 
       it(`dispatches a ${UserActionType.CREATE_USER_ERROR} action if there is an error creating the user`, async () => {
