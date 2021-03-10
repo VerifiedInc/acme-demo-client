@@ -19,7 +19,6 @@ const Register: FC = () => {
   const [formErrorMessage, setFormErrorMessage] = useState('');
 
   const { createUser } = useActionCreators();
-  const { session } = useTypedSelector(state => state.session);
   const { loggedInUser, error: loginError } = useTypedSelector(state => state.auth);
   const { error: userError } = useTypedSelector(state => state.user);
 
@@ -32,8 +31,6 @@ const Register: FC = () => {
     console.error('error logging in', loginError);
     setFormErrorMessage('Error logging in');
   }
-
-  if (!session) return null;
 
   const handleEmailChange: ChangeEventHandler<HTMLInputElement> = (e) => {
     setEmail(e.target.value);

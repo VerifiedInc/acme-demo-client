@@ -14,19 +14,12 @@ jest.mock('../../feathers');
 describe('Register', () => {
   const component = <Provider store={store}><MemoryRouter><Register /></MemoryRouter></Provider>;
 
-  it('renders null if there is no session in state', () => {
-    render(component);
-    expect(screen.queryByText('1.', { exact: false })).not.toBeInTheDocument();
-  });
-
   it('shows the first registration step', () => {
-    store.dispatch({ type: SessionActionType.CREATE_SESSION_SUCCESS, payload: dummySession });
     render(component);
     expect(screen.getByText('1.', { exact: false })).toBeInTheDocument();
   });
 
   it('shows email, password, and phone inputs', () => {
-    store.dispatch({ type: SessionActionType.CREATE_SESSION_SUCCESS, payload: dummySession });
     render(component);
     expect(screen.getByLabelText('Email', { exact: false })).toBeInTheDocument();
     expect(screen.getByLabelText('Password', { exact: false })).toBeInTheDocument();
@@ -34,7 +27,6 @@ describe('Register', () => {
   });
 
   it('shows a register button', () => {
-    store.dispatch({ type: SessionActionType.CREATE_SESSION_SUCCESS, payload: dummySession });
     render(component);
     const button = screen.getByRole('button') as HTMLButtonElement;
 
@@ -50,7 +42,6 @@ describe('Register', () => {
   });
 
   it('shows links to the terms, privacy policy, and login page', () => {
-    store.dispatch({ type: SessionActionType.CREATE_SESSION_SUCCESS, payload: dummySession });
     render(component);
 
     const links = screen.getAllByRole('link');
@@ -63,7 +54,6 @@ describe('Register', () => {
     const mockCreateUser = jest.fn();
 
     it('shows an error message if the email is invalid', () => {
-      store.dispatch({ type: SessionActionType.CREATE_SESSION_SUCCESS, payload: dummySession });
       render(component);
 
       userEvent.type(screen.getByLabelText('Email', { exact: false }), 'asdf');
@@ -72,7 +62,6 @@ describe('Register', () => {
     });
 
     it('shows an error message if the phone is invalid', () => {
-      store.dispatch({ type: SessionActionType.CREATE_SESSION_SUCCESS, payload: dummySession });
       render(component);
 
       userEvent.type(screen.getByLabelText('Email', { exact: false }), 'test@unum.id');
@@ -86,7 +75,6 @@ describe('Register', () => {
       (issuerClient.service as unknown as jest.Mock).mockReturnValue({ create: mockCreateUser });
       (issuerClient.authenticate as jest.Mock).mockResolvedValueOnce(dummyLocalAuthResult);
 
-      store.dispatch({ type: SessionActionType.CREATE_SESSION_SUCCESS, payload: dummySession });
       render(component);
 
       userEvent.type(screen.getByLabelText('Email', { exact: false }), 'test@unum.id');
