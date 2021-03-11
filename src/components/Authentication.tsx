@@ -30,6 +30,7 @@ const Authentication: FC = () => {
   const history = useHistory();
   const { session } = useTypedSelector(state => state.session);
   const { request } = useTypedSelector(state => state.presentationRequest);
+  const { loggedInUser } = useTypedSelector(state => state.auth);
 
   useEffect(() => {
     if (!session) return;
@@ -76,21 +77,36 @@ const Authentication: FC = () => {
     };
   }, [request?.presentationRequestPostDto]);
 
+  const sendPushNotification = () => {
+    console.log('send push notification');
+  };
+
+  const sendSms = () => {
+    console.log('send sms');
+  };
+
+  const sendEmail = () => {
+    console.log('send email');
+  };
+
+  const goToLogin = () => {
+    console.log('go to login');
+  };
+
   if (!session) return null;
 
   return (
     <div className='authentication'>
       <MainContent>
-        {/* customize these headers with branding for the specific demo, or remove them entirely */}
-        <h1>Welcome to (Verifier)!</h1>
-        <h2>Choose one of the options below to create an account.</h2>
         <ContentBox>
-          {/* customize these headers with branding for the specific demo, or remove it entirely */}
-          <h2>Instant sign up! <LightFont>(takes 10 seconds)</LightFont></h2>
-          <h3>Instantly sign up for (Verifier) using your verified ACME account.</h3>
           <VerifierWidget
             presentationRequest={request?.presentationRequestPostDto}
             applicationTitle='ACME'
+            sendPushNotification={sendPushNotification}
+            sendSms={sendSms}
+            sendEmail={sendEmail}
+            goToLogin={goToLogin}
+            userInfo={loggedInUser}
           />
 
           {/* hardcode the rest of the screen with an image */}
