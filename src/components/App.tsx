@@ -53,8 +53,10 @@ const App: FC = () => {
           </Acme>
         </Route>
         <Route path='/declined'>
-          <AltHeader />
-          <Declined />
+          <Acme>
+            <AltHeader />
+            <Declined />
+          </Acme>
         </Route>
       </BrowserRouter>
     </div>
