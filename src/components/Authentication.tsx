@@ -11,8 +11,6 @@ import { useTypedSelector } from '../hooks/useTypedSelector';
 
 import MainContent from './Layout/MainContent';
 import ContentBox from './Layout/ContentBox';
-// import HorizontalDivider from './Layout/HorizontalDivider';
-import LightFont from './Layout/LightFont';
 
 import './Authentication.css';
 import { verifierClient } from '../feathers';
@@ -90,7 +88,7 @@ const Authentication: FC = () => {
   };
 
   const goToLogin = () => {
-    console.log('go to login');
+    history.push('/login');
   };
 
   if (!session) return null;
@@ -108,10 +106,6 @@ const Authentication: FC = () => {
             goToLogin={goToLogin}
             userInfo={loggedInUser}
           />
-
-          {/* hardcode the rest of the screen with an image */}
-          {/* <HorizontalDivider /> */}
-          {/* <img src={image} /> */}
         </ContentBox>
       </MainContent>
 
