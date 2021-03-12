@@ -33,41 +33,44 @@ jobs:
           name: test
           command: yarn test
 
-  # build-and-push-image:
-  #   executor: aws-cli/default
-  #   parameters:
-  #     reg:
-  #       type: string
-  #       default: "248606629437.dkr.ecr.us-west-2.amazonaws.com"
-  #     repo:
-  #       type: string
-  #     base_url:
-  #       type: string
-  #       default: "https://hooli-api.dev-unumid.org"
-  #     issuer_did:
-  #       type: string
-  #       default: "did:unum:d620f77a-b454-4294-a6db-47af171897a6"
+  build-and-push-image:
+    executor: aws-cli/default
+    parameters:
+      reg:
+        type: string
+        default: "248606629437.dkr.ecr.us-west-2.amazonaws.com"
+      repo:
+        type: string
+      issuer_server_url:
+        type: string
+        default: "https://issuer-api.demo.dev-unum.id"
+      verifier_server_url:
+        type: string
+        default: "https://acme-verifier-api.demo.dev-unum.id"
+      issuer_did:
+        type: string
+        default: "did:unum:6ff79cd5-3088-4d69-82b4-4e0b7bbcf3b2"
 
-  #   steps:
-  #     - checkout
-  #     - aws-cli/setup
-  #     - setup_remote_docker:
-  #         version: 19.03.13
-  #     - add_ssh_keys:
-  #         fingerprints:
-  #           - "ae:c4:5c:af:ef:ea:57:12:99:a3:bb:aa:09:e0:57:14"
-  #     - run:
-  #         command: |
-  #           echo Logging in to Amazon ECR...
-  #           $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-  #           echo Building the Docker image...
-  #           DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg BASE_URL=<< parameters.base_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> -t ${CIRCLE_SHA1} .
-  #           docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:dev-latest
-  #           docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:dev-"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
-  #           echo Pushing the Docker image...
-  #           docker push << parameters.reg >>/<< parameters.repo >>:dev-"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
-  #           docker push << parameters.reg >>/<< parameters.repo >>:dev-latest
-  #         name: Update container image
+    steps:
+      - checkout
+      - aws-cli/setup
+      - setup_remote_docker:
+          version: 19.03.13
+      - add_ssh_keys:
+          fingerprints:
+            - "ae:c4:5c:af:ef:ea:57:12:99:a3:bb:aa:09:e0:57:14"
+      - run:
+          command: |
+            echo Logging in to Amazon ECR...
+            $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
+            echo Building the Docker image...
+            DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg ISSUER_SERVER_URL=<< parameters.issuer_server_url >> --build-arg VERIFIER_SERVER_URL=<< parameters.verifier_server_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> -t ${CIRCLE_SHA1} .
+            docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:dev-latest
+            docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:dev-"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+            echo Pushing the Docker image...
+            docker push << parameters.reg >>/<< parameters.repo >>:dev-"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
+            docker push << parameters.reg >>/<< parameters.repo >>:dev-latest
+          name: Update container image
 
   # build-and-push-image-sandbox:
   #   executor: aws-cli/default
@@ -77,9 +80,12 @@ jobs:
   #       default: "248606629437.dkr.ecr.us-west-2.amazonaws.com"
   #     repo:
   #       type: string
-  #     base_url:
+  #     issuer_server_url:
   #       type: string
-  #       default: "https://hooli-api.sandbox-unumid.org"
+  #       default: "https://issuer-api.demo.sandbox-unum.id"
+  #     verifier_server_url:
+  #       type: string
+  #       default: "https://acme-verifier-api.demo.sandbox-unum.id"
   #     issuer_did:
   #       type: string
   #       default: "did:unum:a52c01bb-aaa7-461a-aac7-e912c5206228"
@@ -97,7 +103,7 @@ jobs:
   #           echo Logging in to Amazon ECR...
   #           $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
   #           echo Building the Docker image...
-  #           DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg BASE_URL=<< parameters.base_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> -t ${CIRCLE_SHA1} .
+  #           DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg ISSUER_SERVER_URL=<< parameters.issuer_server_url >> --build-arg VERIFIER_SERVER_URL=<< parameters.verifier_server_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> -t ${CIRCLE_SHA1} .
   #           docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:sandbox-latest
   #           docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:sandbox-"${CIRCLE_TAG}"
   #           echo Pushing the Docker image...
@@ -202,16 +208,16 @@ workflows:
                 - main
                 - test-circleci
                 - sandbox
-      # - build-and-push-image:
-      #     requires:
-      #       - test
-      #     context: AWS-Dev
-      #     repo: hooli-demo-client
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
-      #           - test-circleci
+      - build-and-push-image:
+          requires:
+            - test
+          context: AWS-Dev
+          repo: acme-demo-client
+          filters:
+            branches:
+              only:
+                - main
+                - test-circleci
 
       # - deploy-image:
       #     context: AWS-Dev
