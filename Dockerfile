@@ -1,4 +1,3 @@
-
 # syntax=docker/dockerfile:1.0.0-experimental
 # Stage 0, "build-stage" to build and compile the frontend
 FROM node:14.15.0-alpine as build-stage
