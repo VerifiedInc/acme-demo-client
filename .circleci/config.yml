@@ -111,26 +111,26 @@ jobs:
             docker push << parameters.reg >>/<< parameters.repo >>:sandbox-latest
           name: Update container image
 
-  # deploy-image:
-  #   parameters:
-  #     cluster-name:
-  #       type: string
-  #       default: "dev-customer-cluster"
-  #     repo:
-  #       type: string
-  #     deployment:
-  #       type: string
-  #   executor: aws-eks/python3
-  #   steps:
-  #     - kubernetes/install
-  #     - aws-eks/update-kubeconfig-with-authenticator:
-  #         install-kubectl: true
-  #         aws-region: ${AWS_REGION}
-  #         cluster-name: << parameters.cluster-name >>
-  #     - run:
-  #         command: |
-  #           kubectl set image deployment/<< parameters.deployment >> << parameters.deployment >>=${AWS_ECR_URL}/<< parameters.repo >>:"dev-${CIRCLE_BRANCH}-${CIRCLE_PREVIOUS_BUILD_NUM}"
-  #         name: Update container image
+  deploy-image:
+    parameters:
+      cluster-name:
+        type: string
+        default: "dev-customer-cluster"
+      repo:
+        type: string
+      deployment:
+        type: string
+    executor: aws-eks/python3
+    steps:
+      - kubernetes/install
+      - aws-eks/update-kubeconfig-with-authenticator:
+          install-kubectl: true
+          aws-region: ${AWS_REGION}
+          cluster-name: << parameters.cluster-name >>
+      - run:
+          command: |
+            kubectl set image deployment/<< parameters.deployment >> << parameters.deployment >>=${AWS_ECR_URL}/<< parameters.repo >>:"dev-${CIRCLE_BRANCH}-${CIRCLE_PREVIOUS_BUILD_NUM}"
+          name: Update container image
 
   # deploy-image-sandbox:
   #   parameters:
@@ -219,14 +219,14 @@ workflows:
                 - main
                 - test-circleci
 
-      # - deploy-image:
-      #     context: AWS-Dev
-      #     repo: hooli-demo-client
-      #     deployment: hooli-demo-client
-      #     requires:
-      #       - build-and-push-image
-      #     filters:
-      #       branches:
-      #         only:
-      #           - main
-      #           - test-circleci
+      - deploy-image:
+          context: AWS-Dev
+          repo: acme-demo-client
+          deployment: acme-demo-client
+          requires:
+            - build-and-push-image
+          filters:
+            branches:
+              only:
+                - main
+                - test-circleci
