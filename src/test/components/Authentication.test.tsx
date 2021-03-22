@@ -55,8 +55,8 @@ describe('Authentication', () => {
   it('provides an image for the deeplink button', async () => {
     mockUserAgent('iPhone');
     render(<Provider store={store}><Authentication /></Provider>);
-    const deeplinkBtn = await screen.findByAltText('Verify with ACME')
+    const deeplinkBtn = await screen.findByAltText('Verify with ACME');
     expect(deeplinkBtn).toBeInTheDocument();
-    expect(deeplinkBtn).toHaveAttribute('src', deeplinkImgSrc)
+    expect(deeplinkBtn).toHaveAttribute('src', deeplinkImgSrc);
   });
 });
