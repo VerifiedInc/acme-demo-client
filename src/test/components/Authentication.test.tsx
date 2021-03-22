@@ -8,7 +8,7 @@ import { store } from '../../state';
 import { verifierClient } from '../../feathers';
 import { dummyDemoPresentationRequestoDto, dummySession } from '../mocks';
 import { createSession } from '../../state/actionCreators';
-import deeplinkImgSrc from '../../assets/deeplink-button.png';
+import deeplinkImgSrc from '../../assets/verify-with-acme-button.png';
 
 jest.mock('../../feathers', () => ({
   verifierClient: {
