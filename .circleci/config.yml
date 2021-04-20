@@ -94,7 +94,7 @@ jobs:
         default: "https://acme-verifier-api.demo.unum.id"
       issuer_did:
         type: string
-        default: "did:unum:aeff4b48-513f-4be2-85c7-fb145b7670d1"
+        default: "did:unum:94f9fc51-1098-4c98-92a1-ba4bbf5aafb6"
 
     steps:
       - checkout
