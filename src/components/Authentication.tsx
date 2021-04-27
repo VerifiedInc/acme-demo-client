@@ -89,7 +89,7 @@ const Authentication: FC = () => {
 
   const userInfo = loggedInUser && {
     ...loggedInUser,
-    pushToken: loggedInUser.pushTokens[0]
+    pushToken: loggedInUser.pushTokens.map(pt => ({ provider: pt.provider, value: pt.value }))
   };
 
   return (
