@@ -1,12 +1,13 @@
 import { FeathersError } from '@feathersjs/errors';
-import { DemoPresentationDto, DemoNoPresentationDto } from '@unumid/demo-types';
+import { DemoPresentationDto } from '@unumid/demo-types';
+import { DemoPresentationDto as DemoPresentationDtoDeprecated, DemoNoPresentationDto as DemoNoPresentationDtoDeprecated } from '@unumid/demo-types-deprecated';
 
 import { PresentationAction } from '../actions/presentation';
 import { PresentationActionType } from '../actionTypes/presentation';
 
 export interface PresentationState {
-  sharedPresentation: DemoPresentationDto | null;
-  sharedNoPresentation: DemoNoPresentationDto | null;
+  sharedPresentation: DemoPresentationDto | DemoPresentationDtoDeprecated | null;
+  sharedNoPresentation: DemoPresentationDtoDeprecated | null;
   error: FeathersError | null;
 }
 

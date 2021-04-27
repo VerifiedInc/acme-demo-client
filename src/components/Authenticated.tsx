@@ -16,6 +16,8 @@ const Authenticated: FC = () => {
     return <Redirect to='/' />;
   }
 
+  const userEmail = sharedPresentation.presentation.verifiableCredentials ? sharedPresentation.presentation.verifiableCredentials[0].credentialSubject.userEmail : sharedPresentation.presentation.verifiableCredential[0].credentialSubject.userEmail;
+
   return (
     <div className='authenticated'>
       <MainContent>
