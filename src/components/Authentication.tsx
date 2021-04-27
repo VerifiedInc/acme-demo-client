@@ -88,7 +88,8 @@ const Authentication: FC = () => {
   if (!session) return null;
 
   const userInfo = loggedInUser && {
-    ...loggedInUser,
+    email: loggedInUser.email,
+    phone: loggedInUser.phone,
     pushToken: loggedInUser.pushTokens.map(pt => ({ provider: pt.provider, value: pt.value }))
   };
 
