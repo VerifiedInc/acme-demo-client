@@ -1,5 +1,8 @@
 import { FeathersError } from '@feathersjs/errors';
-import { DemoPresentationDto, DemoNoPresentationDto } from '@unumid/demo-types';
+import {
+  DemoPresentationDto as DeprecatedDemoPresentationDto,
+  DemoNoPresentationDto as DeprecatedDemoNoPresentationDto
+} from '@unumid/demo-types-deprecated';
 import { Dispatch } from 'redux';
 
 import {
@@ -10,13 +13,13 @@ import {
 import { PresentationActionType } from '../actionTypes/presentation';
 import { login } from './auth';
 
-export const handlePresentationShared = (dto: DemoPresentationDto) => async (dispatch: Dispatch): Promise<void> => {
+export const handlePresentationShared = (dto: DeprecatedDemoPresentationDto) => async (dispatch: Dispatch): Promise<void> => {
   const email = dto.presentation.verifiableCredentials[0].credentialSubject.userEmail;
   await login({ email, password: 'password' })(dispatch);
   dispatch({ type: PresentationActionType.PRESENTATION_SHARED_SUCCESS, payload: dto });
 };
 
-export const handleNoPresentationShared = (dto: DemoNoPresentationDto): NoPresentationSharedSuccessAction =>
+export const handleNoPresentationShared = (dto: DeprecatedDemoNoPresentationDto): NoPresentationSharedSuccessAction =>
   ({ type: PresentationActionType.NOPRESENTATION_SHARED_SUCCESS, payload: dto });
 
 export const handlePresentationSharedError = (err: FeathersError): PresentationSharedErrorAction =>

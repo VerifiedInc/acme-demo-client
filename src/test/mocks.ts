@@ -3,11 +3,18 @@ import {
   DemoPresentationRequestCreateOptions,
   DemoSession,
   DemoPresentationDto,
-  DemoNoPresentationDto,
   DemoUser,
   DemoUserCreateOptions
 } from '@unumid/demo-types';
-import { Presentation, NoPresentation, PresentationRequestPostDto } from '@unumid/types';
+import {
+  DemoPresentationDto as DeprecatedDemoPresentationDto,
+  DemoNoPresentationDto as DeprecatedDemoNoPresentationDto
+} from '@unumid/demo-types-deprecated';
+import { Presentation, PresentationRequestPostDto } from '@unumid/types';
+import {
+  Presentation as DeprecatedPresentation,
+  NoPresentation as DeprecatedNoPresentation
+} from '@unumid/types-deprecated';
 import { v4 } from 'uuid';
 
 import { DemoUserAuthenticationResult } from '../types';
@@ -85,7 +92,7 @@ export const dummyDemoPresentationRequestoDto: DemoPresentationRequestDto = {
   updatedAt: now
 };
 
-export const dummyPresentation: Presentation = {
+export const dummyDeprecatedPresentation: DeprecatedPresentation = {
   '@context': [
     'https://www.w3.org/2018/credentials/v1'
   ],
@@ -136,15 +143,15 @@ export const dummyPresentation: Presentation = {
   }
 };
 
-export const dummyDemoPresentationDto: DemoPresentationDto = {
-  presentation: dummyPresentation,
+export const dummyDeprecatedDemoPresentationDto: DeprecatedDemoPresentationDto = {
+  presentation: dummyDeprecatedPresentation,
   uuid: v4(),
   createdAt: now,
   updatedAt: now,
   isVerified: true
 };
 
-export const dummyNoPresentation: NoPresentation = {
+export const dummyDeprecatedNoPresentation: DeprecatedNoPresentation = {
   holder: 'did:unum:5b329cd1-4832-448c-8d7d-08f49e3c6c6d#bab80ad2-08ad-44e7-8549-3d10dd6f7c03',
   presentationRequestUuid: '256e9461-4b65-4941-a6cd-e379276a45b4',
   type: ['NoPresentation', 'NoPresentation'],
@@ -158,8 +165,8 @@ export const dummyNoPresentation: NoPresentation = {
   }
 };
 
-export const dummyDemoNoPresentationDto: DemoNoPresentationDto = {
-  noPresentation: dummyNoPresentation,
+export const dummyDeprecatedDemoNoPresentationDto: DeprecatedDemoNoPresentationDto = {
+  noPresentation: dummyDeprecatedNoPresentation,
   uuid: v4(),
   createdAt: now,
   updatedAt: now,

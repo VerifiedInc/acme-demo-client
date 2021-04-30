@@ -8,7 +8,7 @@ import {
 } from '../../../state/actionCreators/presentation';
 import { login } from '../../../state/actionCreators/auth';
 import { PresentationActionType } from '../../../state/actionTypes/presentation';
-import { dummyDemoPresentationDto, dummyDemoNoPresentationDto } from '../../mocks';
+import { dummyDeprecatedDemoPresentationDto, dummyDeprecatedDemoNoPresentationDto } from '../../mocks';
 
 jest.mock('../../../state/actionCreators/auth');
 describe('presentation action creators', () => {
@@ -17,7 +17,7 @@ describe('presentation action creators', () => {
       const mockInnerLogin = jest.fn();
       (login as jest.Mock).mockReturnValue(mockInnerLogin);
       const dispatch = jest.fn();
-      await handlePresentationShared(dummyDemoPresentationDto)(dispatch);
+      await handlePresentationShared(dummyDeprecatedDemoPresentationDto)(dispatch);
 
       expect(mockInnerLogin).toBeCalled();
     });
@@ -26,10 +26,10 @@ describe('presentation action creators', () => {
       const mockInnerLogin = jest.fn();
       (login as jest.Mock).mockReturnValue(mockInnerLogin);
       const dispatch = jest.fn();
-      await handlePresentationShared(dummyDemoPresentationDto)(dispatch);
+      await handlePresentationShared(dummyDeprecatedDemoPresentationDto)(dispatch);
       const expected = {
         type: PresentationActionType.PRESENTATION_SHARED_SUCCESS,
-        payload: dummyDemoPresentationDto
+        payload: dummyDeprecatedDemoPresentationDto
       };
       expect(dispatch).toBeCalledWith(expected);
     });
@@ -37,10 +37,10 @@ describe('presentation action creators', () => {
 
   describe('handleNoPresentationShared', () => {
     it('returns a NoPresentationSharedSuccessAction', () => {
-      const action = handleNoPresentationShared(dummyDemoNoPresentationDto);
+      const action = handleNoPresentationShared(dummyDeprecatedDemoNoPresentationDto);
       const expected = {
         type: PresentationActionType.NOPRESENTATION_SHARED_SUCCESS,
-        payload: dummyDemoNoPresentationDto
+        payload: dummyDeprecatedDemoNoPresentationDto
       };
       expect(action).toEqual(expected);
     });

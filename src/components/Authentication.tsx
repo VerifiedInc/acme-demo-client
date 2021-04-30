@@ -1,7 +1,11 @@
 import { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CredentialRequest } from '@unumid/types';
-import { DemoNoPresentationDto, DemoPresentationDto, DemoPresentationRequestCreateOptions } from '@unumid/demo-types';
+import { DemoPresentationRequestCreateOptions } from '@unumid/demo-types';
+import {
+  DemoPresentationDto as DeprecatedDemoPresentationDto,
+  DemoNoPresentationDto as DeprecatedDemoNoPresentationDto
+} from '@unumid/demo-types-deprecated';
 import UnumIDWidget from '@unumid/react-web-sdk';
 
 import { config } from '../config';
@@ -16,8 +20,8 @@ import './Authentication.css';
 
 import { verifierClient } from '../feathers';
 
-const isDemoPresentationDto = (obj: DemoPresentationDto | DemoNoPresentationDto): obj is DemoPresentationDto =>
-  !!(obj as DemoPresentationDto).presentation;
+const isDeprecatedDemoPresentationDto = (obj: DeprecatedDemoPresentationDto | DeprecatedDemoNoPresentationDto): obj is DeprecatedDemoPresentationDto =>
+  !!(obj as DeprecatedDemoPresentationDto).presentation;
 
 const Authentication: FC = () => {
   const {
@@ -60,10 +64,10 @@ const Authentication: FC = () => {
 
     // now that we've created the request, listen for a presentation
     const presentationService = verifierClient.service('presentationWebsocket');
-    presentationService.on('created', async (data: DemoPresentationDto | DemoNoPresentationDto) => {
+    presentationService.on('created', async (data: DeprecatedDemoPresentationDto | DeprecatedDemoNoPresentationDto) => {
       console.log('on presentation created, data', data);
 
-      if (isDemoPresentationDto(data)) {
+      if (isDeprecatedDemoPresentationDto(data)) {
         await handlePresentationShared(data);
 
         // customize this route for the specific demo if you want
