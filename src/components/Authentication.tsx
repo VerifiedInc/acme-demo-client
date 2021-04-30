@@ -2,10 +2,6 @@ import { FC, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { CredentialRequest } from '@unumid/types';
 import { DemoPresentationRequestCreateOptions } from '@unumid/demo-types';
-import {
-  DemoPresentationDto as DeprecatedDemoPresentationDto,
-  DemoNoPresentationDto as DeprecatedDemoNoPresentationDto
-} from '@unumid/demo-types-deprecated';
 import UnumIDWidget from '@unumid/react-web-sdk';
 
 import { config } from '../config';
@@ -19,14 +15,20 @@ import ContentBox from './Layout/ContentBox';
 import './Authentication.css';
 
 import { verifierClient } from '../feathers';
-
-const isDeprecatedDemoPresentationDto = (obj: DeprecatedDemoPresentationDto | DeprecatedDemoNoPresentationDto): obj is DeprecatedDemoPresentationDto =>
-  !!(obj as DeprecatedDemoPresentationDto).presentation;
+import {
+  isDemoAcceptedPresentationDto,
+  isDemoDeclinedPresentationDto,
+  isDemoPresentationDto,
+  isDeprecatedDemoNoPresentationDto,
+  isDeprecatedDemoPresentationDto
+} from '../typeguards';
+import { DemoPresentationLikeDto } from '../types';
+import { handleAcceptedPresentationShared, handleDeclinedPresentationShared } from '../state/actionCreators';
 
 const Authentication: FC = () => {
   const {
     createPresentationRequest,
-    handlePresentationShared,
+    handleDeprecatedPresentationShared,
     handleNoPresentationShared
   } = useActionCreators();
 
@@ -64,15 +66,33 @@ const Authentication: FC = () => {
 
     // now that we've created the request, listen for a presentation
     const presentationService = verifierClient.service('presentationWebsocket');
-    presentationService.on('created', async (data: DeprecatedDemoPresentationDto | DeprecatedDemoNoPresentationDto) => {
+    presentationService.on('created', async (data: DemoPresentationLikeDto) => {
       console.log('on presentation created, data', data);
 
-      if (isDeprecatedDemoPresentationDto(data)) {
-        await handlePresentationShared(data);
+      // handle current cases
+      if (isDemoPresentationDto(data)) {
+        // handle accepted
+        if (isDemoAcceptedPresentationDto(data)) {
+          await handleAcceptedPresentationShared(data);
 
-        // customize this route for the specific demo if you want
+          history.push('/authenticated');
+        }
+
+        // handle declined
+        if (isDemoDeclinedPresentationDto(data)) {
+          handleDeclinedPresentationShared(data);
+        }
+      }
+
+      // handle deprecated presentation
+      if (isDeprecatedDemoPresentationDto(data)) {
+        await handleDeprecatedPresentationShared(data);
+
         history.push('/authenticated');
-      } else {
+      }
+
+      // handle deprecated noPresentation
+      if (isDeprecatedDemoNoPresentationDto(data)) {
         handleNoPresentationShared(data);
 
         history.push('/declined');

@@ -1,3 +1,4 @@
+import { DemoPresentationDto } from '@unumid/demo-types';
 import {
   DemoPresentationDto as DeprecatedDemoPresentationDto,
   DemoNoPresentationDto as DeprecatedDemoNoPresentationDto
@@ -8,12 +9,12 @@ import { ActionWithoutPayload, ActionWithPayload, FeathersErrorAction } from './
 
 export type PresentationSharedSuccessAction = ActionWithPayload<
   PresentationActionType.PRESENTATION_SHARED_SUCCESS,
-  DeprecatedDemoPresentationDto
+  DeprecatedDemoPresentationDto | DemoPresentationDto
 >;
 
 export type NoPresentationSharedSuccessAction = ActionWithPayload<
   PresentationActionType.NOPRESENTATION_SHARED_SUCCESS,
-  DeprecatedDemoNoPresentationDto
+  DeprecatedDemoNoPresentationDto | DemoPresentationDto
 >;
 
 export type PresentationSharedErrorAction = FeathersErrorAction<PresentationActionType.PRESENTATION_SHARED_ERROR>;

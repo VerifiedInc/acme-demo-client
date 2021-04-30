@@ -1,7 +1,6 @@
 import { GeneralError } from '@feathersjs/errors';
 
 import {
-  handlePresentationShared,
   handleNoPresentationShared,
   handlePresentationSharedError,
   resetPresentationState
@@ -12,28 +11,28 @@ import { dummyDeprecatedDemoPresentationDto, dummyDeprecatedDemoNoPresentationDt
 
 jest.mock('../../../state/actionCreators/auth');
 describe('presentation action creators', () => {
-  describe('handlePresentationShared', () => {
-    it('logs the user in', async () => {
-      const mockInnerLogin = jest.fn();
-      (login as jest.Mock).mockReturnValue(mockInnerLogin);
-      const dispatch = jest.fn();
-      await handlePresentationShared(dummyDeprecatedDemoPresentationDto)(dispatch);
+  // xdescribe('handlePresentationShared', () => {
+  //   it('logs the user in', async () => {
+  //     const mockInnerLogin = jest.fn();
+  //     (login as jest.Mock).mockReturnValue(mockInnerLogin);
+  //     const dispatch = jest.fn();
+  //     await handlePresentationShared(dummyDeprecatedDemoPresentationDto)(dispatch);
 
-      expect(mockInnerLogin).toBeCalled();
-    });
+  //     expect(mockInnerLogin).toBeCalled();
+  //   });
 
-    it('dispatches a PresentationSharedSuccessAction', async () => {
-      const mockInnerLogin = jest.fn();
-      (login as jest.Mock).mockReturnValue(mockInnerLogin);
-      const dispatch = jest.fn();
-      await handlePresentationShared(dummyDeprecatedDemoPresentationDto)(dispatch);
-      const expected = {
-        type: PresentationActionType.PRESENTATION_SHARED_SUCCESS,
-        payload: dummyDeprecatedDemoPresentationDto
-      };
-      expect(dispatch).toBeCalledWith(expected);
-    });
-  });
+  //   it('dispatches a PresentationSharedSuccessAction', async () => {
+  //     const mockInnerLogin = jest.fn();
+  //     (login as jest.Mock).mockReturnValue(mockInnerLogin);
+  //     const dispatch = jest.fn();
+  //     await handlePresentationShared(dummyDeprecatedDemoPresentationDto)(dispatch);
+  //     const expected = {
+  //       type: PresentationActionType.PRESENTATION_SHARED_SUCCESS,
+  //       payload: dummyDeprecatedDemoPresentationDto
+  //     };
+  //     expect(dispatch).toBeCalledWith(expected);
+  //   });
+  // });
 
   describe('handleNoPresentationShared', () => {
     it('returns a NoPresentationSharedSuccessAction', () => {
