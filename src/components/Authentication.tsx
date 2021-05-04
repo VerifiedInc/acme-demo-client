@@ -23,13 +23,14 @@ import {
   isDeprecatedDemoPresentationDto
 } from '../typeguards';
 import { DemoPresentationLikeDto } from '../types';
-import { handleAcceptedPresentationShared, handleDeclinedPresentationShared } from '../state/actionCreators';
 
 const Authentication: FC = () => {
   const {
     createPresentationRequest,
     handleDeprecatedPresentationShared,
-    handleNoPresentationShared
+    handleNoPresentationShared,
+    handleAcceptedPresentationShared,
+    handleDeclinedPresentationShared
   } = useActionCreators();
 
   const history = useHistory();
