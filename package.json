@@ -90,6 +90,7 @@
     }
   },
   "resolutions": {
-    "@unumid/types": "git+ssh://git@github.com/UnumID/types.git#v2.1.0"
+    "@unumid/types": "git+ssh://git@github.com/UnumID/types.git#2.1.0",
+    "@unumid/demo-types": "git+ssh://git@github.com/UnumID/demo-types.git#v2.1.1"
   }
 }
