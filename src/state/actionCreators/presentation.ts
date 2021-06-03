@@ -1,5 +1,4 @@
 import { FeathersError } from '@feathersjs/errors';
-import { DemoPresentationDto } from '@unumid/demo-types';
 import {
   DemoPresentationDto as DeprecatedDemoPresentationDto,
   DemoNoPresentationDto as DeprecatedDemoNoPresentationDto
