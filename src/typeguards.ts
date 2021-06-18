@@ -58,7 +58,7 @@ export function isDemoDeclinedPresentationDto (dto: DemoPresentationDto): dto is
  */
 export function isDeprecatedNoPresentation (presentationLike: PresentationLike): presentationLike is DeprecatedNoPresentation {
   // unique among PresentationLike objects, the deprecated NoPresentation will always have 'NoPresentation' as the first element in its type array.
-  return (presentationLike as DeprecatedNoPresentation).type[0] === 'NoPresentation' && !(presentationLike as Presentation).verifiableCredential;
+  return (presentationLike as DeprecatedNoPresentation).type[0] === 'NoPresentation';
 }
 
 /**
@@ -109,7 +109,7 @@ export function isPresentation (presentationLike: PresentationLike): presentatio
  */
 export function isDeprecatedDemoNoPresentationDto (dto: DemoPresentationLikeDto): dto is DeprecatedDemoNoPresentationDto {
   // only the DeprecatedDemoNoPresentationDto has a noPresentation property
-  return !!(dto as DeprecatedDemoNoPresentationDto).noPresentation;
+  return !!(dto as DeprecatedDemoNoPresentationDto).noPresentation || (((dto as DemoPresentationDto).presentation) && !(dto as DemoPresentationDto).presentation.verifiableCredential);
 }
 
 /**
