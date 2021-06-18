@@ -58,7 +58,7 @@ export function isDemoDeclinedPresentationDto (dto: DemoPresentationDto): dto is
  */
 export function isDeprecatedNoPresentation (presentationLike: PresentationLike): presentationLike is DeprecatedNoPresentation {
   // unique among PresentationLike objects, the deprecated NoPresentation will always have 'NoPresentation' as the first element in its type array.
-  return (presentationLike as DeprecatedNoPresentation).type[0] === 'NoPresentation';
+  return (presentationLike as DeprecatedNoPresentation).type[0] === 'NoPresentation' && !(presentationLike as Presentation).verifiableCredential;
 }
 
 /**
@@ -71,6 +71,7 @@ export function isDeprecatedNoPresentation (presentationLike: PresentationLike):
 export function isDeprecatedPresentation (presentationLike: PresentationLike): presentationLike is DeprecatedPresentation {
   // if it's a DeprecatedNoPresentation, it's not a DeprecatedPresentation
   if (isDeprecatedNoPresentation(presentationLike)) {
+    console.log('isDeprecatedPresentation isDeprecatedNoPresentation TRUE');
     return false;
   }
 
@@ -89,11 +90,13 @@ export function isDeprecatedPresentation (presentationLike: PresentationLike): p
 export function isPresentation (presentationLike: PresentationLike): presentationLike is Presentation {
   // if it's a DeprecatedNoPresentation, it's not a Presentation
   if (isDeprecatedNoPresentation(presentationLike)) {
+    console.log('isPresentation  isDeprecatedNoPresentation TRUE');
     return false;
   }
 
   // if it's a DeprecatedPresentation, it's not a Presentation
   if (isDeprecatedPresentation(presentationLike)) {
+    console.log('isPresentation  isDeprecatedPresentation TRUE');
     return false;
   }
 
@@ -130,6 +133,7 @@ export function isDeprecatedDemoPresentationDto (dto: DemoPresentationLikeDto): 
 export function isDemoPresentationDto (dto: DemoPresentationLikeDto): dto is DemoPresentationDto {
   // if it's a DeprecatedDemoNoPresentationDto it's not a DemoPresentationDto
   if (isDeprecatedDemoNoPresentationDto(dto)) {
+    console.log('isDemoPresentationDtoisDeprecatedDemoNoPresentationDto  TRUE');
     return false;
   }
 
