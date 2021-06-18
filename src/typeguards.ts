@@ -32,6 +32,7 @@ export function isAcceptedPresentation (presentation: Presentation): presentatio
  * or if it is empty.
  */
 export function isDeclinedPresentation (presentation: Presentation): presentation is DeclinedPresentation {
+  console.log('verifiableCredential', presentation.verifiableCredential);
   return !!(!presentation.verifiableCredential || presentation.verifiableCredential.length === 0);
 }
 

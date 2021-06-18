@@ -72,6 +72,7 @@ const Authentication: FC = () => {
 
       // handle current cases
       if (isDemoPresentationDto(data)) {
+        console.log('is a DemoPresentationDto');
         // handle accepted
         if (isDemoAcceptedPresentationDto(data)) {
           await handleAcceptedPresentationShared(data);
@@ -81,9 +82,13 @@ const Authentication: FC = () => {
 
         // handle declined
         if (isDemoDeclinedPresentationDto(data)) {
+          console.log('is a declined DemoPresentationDto');
           handleDeclinedPresentationShared(data);
         }
+        console.log('is not a declined DemoPresentationDto');
       }
+
+      console.log('is a deprecated DemoPresentationDto');
 
       // handle deprecated presentation
       if (isDeprecatedDemoPresentationDto(data)) {
