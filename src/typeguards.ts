@@ -109,7 +109,8 @@ export function isPresentation (presentationLike: PresentationLike): presentatio
  */
 export function isDeprecatedDemoNoPresentationDto (dto: DemoPresentationLikeDto): dto is DeprecatedDemoNoPresentationDto {
   // only the DeprecatedDemoNoPresentationDto has a noPresentation property
-  return !!(dto as DeprecatedDemoNoPresentationDto).noPresentation || (((dto as DemoPresentationDto).presentation) && !(dto as DemoPresentationDto).presentation.verifiableCredential);
+  // return !!(dto as DeprecatedDemoNoPresentationDto).noPresentation || (((dto as DemoPresentationDto).presentation) && !(dto as DemoPresentationDto).presentation.verifiableCredential);
+  return !!(dto as DeprecatedDemoNoPresentationDto).noPresentation;
 }
 
 /**
