@@ -85,6 +85,7 @@ const Authentication: FC = () => {
         if (isDemoDeclinedPresentationDto(data)) {
           console.log('is a declined DemoPresentationDto');
           handleDeclinedPresentationShared(data);
+          history.push('/declined');
         }
         console.log('is not a declined DemoPresentationDto');
       }
