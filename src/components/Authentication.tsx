@@ -69,7 +69,8 @@ const Authentication: FC = () => {
     const presentationService = verifierClient.service('presentationWebsocket');
     presentationService.on('created', async (data: DemoPresentationLikeDto) => {
       console.log('on presentation created, data', data);
-
+      // eslint-disable-next-line no-debugger
+      debugger;
       // handle current cases
       if (isDemoPresentationDto(data)) {
         console.log('is a DemoPresentationDto');
