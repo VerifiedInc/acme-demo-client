@@ -10,7 +10,7 @@ import App from './components/App';
 import './index.css';
 
 import LogRocket from 'logrocket';
-LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID as string);
 console.log(process.env.REACT_APP_LOG_ROCKET_ID);
+LogRocket.init(process.env.REACT_APP_LOG_ROCKET_ID as string);
 
 render(<Provider store={store}><App /></Provider>, document.querySelector('#root'));
