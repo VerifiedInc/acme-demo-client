@@ -11,6 +11,15 @@ const issuerClient = feathers();
 // const issuerSocket = socketio(config.issuerServerUrl);
 
 const verifierSocket = socketio(config.verifierServerUrl, {transports: ['polling']});
+
+verifierSocket.on('connect', () => {
+  console.log('verifier socket connect');
+});
+
+verifierSocket.on('disconnect', () => {
+  console.log('verifier socket disconnect');
+});
+
 const issuerSocket = socketio(config.issuerServerUrl, {transports: ['polling']});
 
 verifierClient.configure(feathersSocketio(verifierSocket));
