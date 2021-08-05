@@ -30,6 +30,7 @@ const App: FC = () => {
       console.log('verifier socket connect', args);
 
       // attempt to re-join the session channel
+      console.log('session', session);
       if (session) {
         console.log(`joining session channel ${session.uuid}`);
         try {
