@@ -7,12 +7,8 @@ import { config } from './config';
 const verifierClient = feathers();
 const issuerClient = feathers();
 
-// const verifierSocket = socketio(config.verifierServerUrl);
-// const issuerSocket = socketio(config.issuerServerUrl);
-
-export const verifierSocket = socketio(config.verifierServerUrl, { transports: ['polling', 'websocket'] });
-
-const issuerSocket = socketio(config.issuerServerUrl, { transports: ['polling', 'websocket'] });
+const verifierSocket = socketio(config.verifierServerUrl);
+const issuerSocket = socketio(config.issuerServerUrl);
 
 verifierClient.configure(feathersSocketio(verifierSocket));
 
