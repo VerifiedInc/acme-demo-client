@@ -48,7 +48,7 @@ const App: FC = () => {
     return () => {
       verifierSocket.removeAllListeners();
     };
-  }, []);
+  }, [session]);
 
   return (
     <div>
