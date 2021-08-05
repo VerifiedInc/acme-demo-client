@@ -10,15 +10,7 @@ const issuerClient = feathers();
 // const verifierSocket = socketio(config.verifierServerUrl);
 // const issuerSocket = socketio(config.issuerServerUrl);
 
-const verifierSocket = socketio(config.verifierServerUrl, {transports: ['polling']});
-
-verifierSocket.on('connect', (...args: any[]) => {
-  console.log('verifier socket connect', args);
-});
-
-verifierSocket.on('disconnect', (...args: any[]) => {
-  console.log('verifier socket disconnect', args);
-});
+export const verifierSocket = socketio(config.verifierServerUrl, {transports: ['polling']});
 
 const issuerSocket = socketio(config.issuerServerUrl, {transports: ['polling']});
 
