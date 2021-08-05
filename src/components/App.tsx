@@ -13,6 +13,7 @@ import Register from './Register';
 import Login from './Login';
 import Unumid from './Layout/Unumid';
 import Acme from './Layout/Acme';
+import { verifierClient } from '../feathers';
 
 const App: FC = () => {
   const { createSession } = useActionCreators();
@@ -23,6 +24,20 @@ const App: FC = () => {
       createSession();
     }
   }, [session]);
+
+  useEffect(() => {
+    verifierClient.on('connection', () => {
+      console.log('connection');
+    });
+
+    verifierClient.on('disconnect', () => {
+      console.log('disconnect');
+    });
+
+    return () => {
+      verifierClient.removeAllListeners();
+    };
+  }, []);
 
   return (
     <div>
