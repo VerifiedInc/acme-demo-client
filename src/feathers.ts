@@ -10,9 +10,9 @@ const issuerClient = feathers();
 // const verifierSocket = socketio(config.verifierServerUrl);
 // const issuerSocket = socketio(config.issuerServerUrl);
 
-export const verifierSocket = socketio(config.verifierServerUrl, {transports: ['polling']});
+export const verifierSocket = socketio(config.verifierServerUrl, { transports: ['polling', 'websocket'] });
 
-const issuerSocket = socketio(config.issuerServerUrl, {transports: ['polling']});
+const issuerSocket = socketio(config.issuerServerUrl, { transports: ['polling', 'websocket'] });
 
 verifierClient.configure(feathersSocketio(verifierSocket));
 
