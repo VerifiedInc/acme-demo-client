@@ -81,7 +81,6 @@ describe('Register', () => {
       userEvent.type(screen.getByLabelText('Email', { exact: false }), 'test@unum.id');
       userEvent.click(screen.getByRole('button'));
       await screen.findByText('2.', { exact: false });
-      expect(screen.getByRole('link')).toHaveAttribute('href', 'https://apps.apple.com/us/app/acme-unum-id/id1557576599');
 
       expect(mockCreateUser).toBeCalled();
       expect(issuerClient.authenticate).toBeCalled();
