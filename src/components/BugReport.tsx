@@ -56,7 +56,6 @@ const BugReport: FC = () => {
 
   const handleSubmit: FormEventHandler = (e) => {
     e.preventDefault();
-    debugger;
     LogRocket.captureMessage('User bug report', {
       extra: {
         message,
