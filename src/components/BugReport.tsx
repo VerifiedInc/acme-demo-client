@@ -1,10 +1,15 @@
 import LogRocket from 'logrocket';
-import { FC, useState, MouseEventHandler, ChangeEventHandler, FormEventHandler } from 'react';
+import {
+  FC,
+  useState,
+  MouseEventHandler,
+  ChangeEventHandler,
+  FormEventHandler,
+  useEffect
+} from 'react';
 import Modal from 'react-modal';
 
 import './BugReport.css';
-
-Modal.setAppElement('#root');
 
 const modalStyles = {
   overlay: {
@@ -32,6 +37,10 @@ const BugReport: FC = () => {
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false)
+
+  useEffect(() => {
+    Modal.setAppElement('#root');
+  }, []);
 
   const openModal: MouseEventHandler<HTMLButtonElement> = () => {
     setModalIsOpen(true);
@@ -100,7 +109,7 @@ const BugReport: FC = () => {
         </div>
       </Modal>
     </div>
-  )
+  );
 };
 
 export default BugReport;
