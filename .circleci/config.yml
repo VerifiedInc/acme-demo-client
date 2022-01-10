@@ -309,6 +309,32 @@ workflows:
             branches:
               ignore: /.*/
 
+      - build-and-push-unum-image-sandbox:
+          requires:
+            - test
+          context: AWS-Dev
+          repo: acme-unum-demo-client
+          holder_app_uuid: b8820ef7-8ae8-4fa9-9a99-84629b2ea147
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
+      - deploy-unum-image-sandbox:
+          context: 
+            - AWS-Dev
+            - Slack-Context
+          requires:
+            - build-and-push-image-sandbox
+          repo: acme-demo-client
+          deployment: acme-unum-demo-client
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
+
   build-and-deploy:
     jobs:
       - test:
@@ -316,6 +342,7 @@ workflows:
             branches:
               only:
                 - main
+                
       - build-and-push-image:
           requires:
             - test
@@ -326,13 +353,35 @@ workflows:
             branches:
               only:
                 - main
-
       - deploy-image:
           context: 
             - AWS-Dev
             - Slack-Context
           repo: acme-demo-client
           deployment: acme-demo-client
+          requires:
+            - build-and-push-image
+          filters:
+            branches:
+              only:
+                - main
+
+      - build-and-push-unum-image:
+          requires:
+            - test
+          context: AWS-Dev
+          repo: acme-demo-client
+          holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
+          filters:
+            branches:
+              only:
+                - main
+      - deploy-unum-image:
+          context: 
+            - AWS-Dev
+            - Slack-Context
+          repo: acme-demo-client
+          deployment: acme-unum-demo-client
           requires:
             - build-and-push-image
           filters:
@@ -347,6 +396,7 @@ workflows:
             branches:
               only:
                 - test-circleci
+
       - build-and-push-image-test:
           requires:
             - test
@@ -357,7 +407,6 @@ workflows:
             branches:
               only:
                 - test-circleci
-
       - deploy-image:
           context: 
             - AWS-Dev
@@ -371,80 +420,6 @@ workflows:
               only:
                 - test-circleci
 
-  # ACME app compatible with Unum Wallet Workflows        
-  build-and-deploy-unum-release:
-    jobs:
-      - test:
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - build-and-push-image-sandbox:
-          requires:
-            - test
-          context: AWS-Dev
-          repo: acme-unum-demo-client
-          holder_app_uuid: b8820ef7-8ae8-4fa9-9a99-84629b2ea147
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-      - deploy-image-sandbox:
-          context: 
-            - AWS-Dev
-            - Slack-Context
-          requires:
-            - build-and-push-image-sandbox
-          repo: acme-demo-client
-          deployment: acme-unum-demo-client
-          filters:
-            tags:
-              only: /^v.*/
-            branches:
-              ignore: /.*/
-
-  build-and-deploy-acme-unum-dev:
-    jobs:
-      - test:
-          filters:
-            branches:
-              only:
-                - main
-      - build-and-push-image:
-          requires:
-            - test
-          context: AWS-Dev
-          repo: acme-demo-client
-          holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
-          filters:
-            branches:
-              only:
-                - main
-
-      - deploy-image:
-          context: 
-            - AWS-Dev
-            - Slack-Context
-          repo: acme-demo-client
-          deployment: acme-unum-demo-client
-          requires:
-            - build-and-push-image
-          filters:
-            branches:
-              only:
-                - main
-
-  build-and-deploy-acme-unum-test:
-    jobs:
-      - test:
-          filters:
-            branches:
-              only:
-                - test-circleci
       - build-and-push-image-test:
           requires:
             - test
@@ -455,7 +430,6 @@ workflows:
             branches:
               only:
                 - test-circleci
-
       - deploy-image:
           context: 
             - AWS-Dev
@@ -468,3 +442,101 @@ workflows:
             branches:
               only:
                 - test-circleci
+
+  # # ACME app compatible with Unum Wallet Workflows        
+  # build-and-deploy-unum-release:
+  #   jobs:
+  #     - test:
+  #         filters:
+  #           tags:
+  #             only: /^v.*/
+  #           branches:
+  #             ignore: /.*/
+
+  #     - build-and-push-unum-image-sandbox:
+  #         requires:
+  #           - test
+  #         context: AWS-Dev
+  #         repo: acme-unum-demo-client
+  #         holder_app_uuid: b8820ef7-8ae8-4fa9-9a99-84629b2ea147
+  #         filters:
+  #           tags:
+  #             only: /^v.*/
+  #           branches:
+  #             ignore: /.*/
+
+  #     - deploy-unum-image-sandbox:
+  #         context: 
+  #           - AWS-Dev
+  #           - Slack-Context
+  #         requires:
+  #           - build-and-push-image-sandbox
+  #         repo: acme-demo-client
+  #         deployment: acme-unum-demo-client
+  #         filters:
+  #           tags:
+  #             only: /^v.*/
+  #           branches:
+  #             ignore: /.*/
+
+  # build-and-deploy-acme-unum-dev:
+  #   jobs:
+  #     - test:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - main
+  #     - build-and-push-unum-image:
+  #         requires:
+  #           - test
+  #         context: AWS-Dev
+  #         repo: acme-demo-client
+  #         holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
+  #         filters:
+  #           branches:
+  #             only:
+  #               - main
+
+  #     - deploy-unum-image:
+  #         context: 
+  #           - AWS-Dev
+  #           - Slack-Context
+  #         repo: acme-demo-client
+  #         deployment: acme-unum-demo-client
+  #         requires:
+  #           - build-and-push-image
+  #         filters:
+  #           branches:
+  #             only:
+  #               - main
+
+  # build-and-deploy-acme-unum-test:
+  #   jobs:
+  #     - test:
+  #         filters:
+  #           branches:
+  #             only:
+  #               - test-circleci
+  #     - build-and-push-image-test:
+  #         requires:
+  #           - test
+  #         context: AWS-Dev
+  #         repo: acme-unum-demo-client
+  #         holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
+  #         filters:
+  #           branches:
+  #             only:
+  #               - test-circleci
+
+  #     - deploy-image:
+  #         context: 
+  #           - AWS-Dev
+  #           - Slack-Context
+  #         repo: acme-unum-demo-client
+  #         deployment: acme-unum-demo-client
+  #         requires:
+  #           - build-and-push-image-test
+  #         filters:
+  #           branches:
+  #             only:
+  #               - test-circleci
