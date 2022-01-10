@@ -442,7 +442,7 @@ workflows:
           repo: acme-unum-demo-client
           deployment: acme-unum-demo-client
           requires:
-            - build-and-push-image-test
+            - build-and-push-unum-image-test
           filters:
             branches:
               only:
