@@ -400,7 +400,7 @@ workflows:
           requires:
             - build-and-push-image-sandbox
           repo: acme-demo-client
-          deployment: acme-demo-client
+          deployment: acme-unum-demo-client
           filters:
             tags:
               only: /^v.*/
@@ -430,7 +430,7 @@ workflows:
             - AWS-Dev
             - Slack-Context
           repo: acme-demo-client
-          deployment: acme-demo-client
+          deployment: acme-unum-demo-client
           requires:
             - build-and-push-image
           filters:
@@ -461,7 +461,7 @@ workflows:
             - AWS-Dev
             - Slack-Context
           repo: acme-unum-demo-client
-          deployment: acme-demo-client
+          deployment: acme-unum-demo-client
           requires:
             - build-and-push-image-test
           filters:
