@@ -309,7 +309,7 @@ workflows:
             branches:
               ignore: /.*/
 
-      - build-and-push-unum-image-sandbox:
+      - build-and-push-image-sandbox:
           requires:
             - test
           context: AWS-Dev
@@ -321,7 +321,7 @@ workflows:
             branches:
               ignore: /.*/
 
-      - deploy-unum-image-sandbox:
+      - deploy-image-sandbox:
           context: 
             - AWS-Dev
             - Slack-Context
@@ -366,7 +366,7 @@ workflows:
               only:
                 - main
 
-      - build-and-push-unum-image:
+      - build-and-push-image:
           requires:
             - test
           context: AWS-Dev
@@ -376,7 +376,7 @@ workflows:
             branches:
               only:
                 - main
-      - deploy-unum-image:
+      - deploy-image:
           context: 
             - AWS-Dev
             - Slack-Context
@@ -453,7 +453,7 @@ workflows:
   #           branches:
   #             ignore: /.*/
 
-  #     - build-and-push-unum-image-sandbox:
+  #     - build-and-push-image-sandbox:
   #         requires:
   #           - test
   #         context: AWS-Dev
@@ -465,7 +465,7 @@ workflows:
   #           branches:
   #             ignore: /.*/
 
-  #     - deploy-unum-image-sandbox:
+  #     - deploy-unum-sandbox:
   #         context: 
   #           - AWS-Dev
   #           - Slack-Context
@@ -486,7 +486,7 @@ workflows:
   #           branches:
   #             only:
   #               - main
-  #     - build-and-push-unum-image:
+  #     - build-and-push-image:
   #         requires:
   #           - test
   #         context: AWS-Dev
@@ -497,7 +497,7 @@ workflows:
   #             only:
   #               - main
 
-  #     - deploy-unum-image:
+  #     - deploy-image:
   #         context: 
   #           - AWS-Dev
   #           - Slack-Context
@@ -510,7 +510,7 @@ workflows:
   #             only:
   #               - main
 
-  # build-and-deploy-acme-unum-test:
+  # build-and-deploy-acme-test:
   #   jobs:
   #     - test:
   #         filters:
