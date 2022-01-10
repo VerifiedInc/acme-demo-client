@@ -430,7 +430,7 @@ workflows:
       - build-and-push-image-test:
           name: "build-and-push-unum-image-test"
           requires:
-            - test
+            - deploy-image
           context: AWS-Dev
           repo: acme-demo-client
           holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
