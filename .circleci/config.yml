@@ -310,6 +310,7 @@ workflows:
               ignore: /.*/
 
       - build-and-push-image-sandbox:
+          name: "build-and-push-unum-image-sandbox"
           requires:
             - test
           context: AWS-Dev
@@ -320,8 +321,8 @@ workflows:
               only: /^v.*/
             branches:
               ignore: /.*/
-
       - deploy-image-sandbox:
+          name: "deploy-unum-image-sandbox"
           context: 
             - AWS-Dev
             - Slack-Context
@@ -367,6 +368,7 @@ workflows:
                 - main
 
       - build-and-push-image:
+          name: "build-and-push-unum-image"
           requires:
             - test
           context: AWS-Dev
@@ -377,6 +379,7 @@ workflows:
               only:
                 - main
       - deploy-image:
+          name: "deploy-unum-image"
           context: 
             - AWS-Dev
             - Slack-Context
@@ -421,6 +424,7 @@ workflows:
                 - test-circleci
 
       - build-and-push-image-test:
+          name: "build-and-push-unum-image-test"
           requires:
             - test
           context: AWS-Dev
@@ -431,6 +435,7 @@ workflows:
               only:
                 - test-circleci
       - deploy-image:
+          name: "deploy-unum-image-test"
           context: 
             - AWS-Dev
             - Slack-Context
