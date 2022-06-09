@@ -150,7 +150,7 @@ const Register: FC = () => {
                 <ErrorMessage>{formErrorMessage}</ErrorMessage>
               </form>
               <div>
-                By creating an account you agree to our <a href='https://unum.id/terms-of-service.html'>terms of service</a> and <a href='https://unum.id/privacy-policy.html'>privacy policy</a>.
+                By creating an account you agree to our <a href='https://www.unumid.co/legal-materials/terms-of-service'>terms of service</a> and <a href='https://www.unumid.co/legal-materials/privacy-policy'>privacy policy</a>.
               </div>
               <div className='login-link'>
                 Already registered?&nbsp;<Link to='/login'>Log in here.</Link>
