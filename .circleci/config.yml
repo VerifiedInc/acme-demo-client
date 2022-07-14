@@ -384,7 +384,8 @@ workflows:
                 - test-circleci
 
       # ACME Holder
-      - build-and-push-image-test:
+      - build-and-push-image:
+          name: build-and-push-image-test
           requires:
             - test
           context: AWS-Dev
@@ -411,7 +412,7 @@ workflows:
                 - test-circleci
 
       # Unum Holder
-      - build-and-push-image-test:
+      - build-and-push-image:
           name: "build-and-push-unum-image-test"
           requires:
             - deploy-image
