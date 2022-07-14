@@ -45,7 +45,7 @@ describe('Register', () => {
     render(component);
 
     const links = screen.getAllByRole('link');
-    expect(links[0]).toHaveAttribute('href', 'https://unum.id/terms-of-service.html');
+    expect(links[0]).toHaveAttribute('href', 'https://www.unumid.co/legal-materials/terms-of-service');
     expect(links[1]).toHaveAttribute('href', 'https://unum.id/privacy-policy.html');
     expect(links[2]).toHaveAttribute('href', '/login');
   });
