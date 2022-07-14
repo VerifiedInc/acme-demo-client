@@ -65,51 +65,7 @@ jobs:
         default: "vm6x8i/acme-verifier-client-dev"
       holder_app_uuid:
         type: string
-
-    steps:
-      - checkout
-      - aws-cli/setup
-      - setup_remote_docker:
-          version: 19.03.13
-      - add_ssh_keys:
-          fingerprints:
-            - "ae:c4:5c:af:ef:ea:57:12:99:a3:bb:aa:09:e0:57:14"
-      - run:
-          command: |
-            echo Logging in to Amazon ECR...
-            $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
-            echo Building the Docker image...
-            DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg API_KEY=${DEV_API_KEY} --build-arg ISSUER_SERVER_URL=<< parameters.issuer_server_url >> --build-arg ENV=<< parameters.env >> --build-arg VERIFIER_SERVER_URL=<< parameters.verifier_server_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> --build-arg LOG_ROCKET_ID=<< parameters.log_rocket_id >> --build-arg HOLDER_APP_UUID=<< parameters.holder_app_uuid >> -t ${CIRCLE_SHA1} .
-            docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:dev-latest
-            docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
-            echo Pushing the Docker image...
-            docker push << parameters.reg >>/<< parameters.repo >>:"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
-            docker push << parameters.reg >>/<< parameters.repo >>:dev-latest
-          name: Update container image
-
-  build-and-push-image-test:
-    executor: aws-cli/default
-    parameters:
-      reg:
-        type: string
-        default: "248606629437.dkr.ecr.us-west-2.amazonaws.com"
-      repo:
-        type: string
-      env:
-        type: string
-        default: "development"
-      issuer_server_url:
-        type: string
-      verifier_server_url:
-        type: string
-        default: "https://acme-verifier-api.demo.dev-unumid.co"
-      issuer_did:
-        type: string
-        default: "did:unum:6ff79cd5-3088-4d69-82b4-4e0b7bbcf3b2"
-      log_rocket_id:
-        type: string
-        default: "vm6x8i/acme-verifier-client-dev"
-      holder_app_uuid:
+      image_tag:
         type: string
 
     steps:
@@ -121,17 +77,17 @@ jobs:
           fingerprints:
             - "ae:c4:5c:af:ef:ea:57:12:99:a3:bb:aa:09:e0:57:14"
       - run:
+          name: Update container image
           command: |
             echo Logging in to Amazon ECR...
             $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
             echo Building the Docker image...
             DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg API_KEY=${DEV_API_KEY} --build-arg ISSUER_SERVER_URL=<< parameters.issuer_server_url >> --build-arg ENV=<< parameters.env >> --build-arg VERIFIER_SERVER_URL=<< parameters.verifier_server_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> --build-arg LOG_ROCKET_ID=<< parameters.log_rocket_id >> --build-arg HOLDER_APP_UUID=<< parameters.holder_app_uuid >> -t ${CIRCLE_SHA1} .
-            docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:test-latest
+            docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:<< parameters.image_tag >>
             docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
             echo Pushing the Docker image...
             docker push << parameters.reg >>/<< parameters.repo >>:"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
-            docker push << parameters.reg >>/<< parameters.repo >>:test-latest
-          name: Update container image
+            docker push << parameters.reg >>/<< parameters.repo >>:<< parameters.image_tag >>
 
   build-and-push-image-sandbox:
     executor: aws-cli/default
@@ -156,6 +112,8 @@ jobs:
         type: string
         default: "vm6x8i/acme-verifier-client-sandbox"
       holder_app_uuid:
+        type: string
+      image_tag:
         type: string
 
     steps:
@@ -190,6 +148,8 @@ jobs:
         type: string
       deployment:
         type: string
+      image_tag:
+        type: string
 
     steps:
       - kubernetes/install
@@ -199,7 +159,10 @@ jobs:
           cluster-name: << parameters.cluster-name >>
       - run:
           command: |
-            kubectl set image deployment/<< parameters.deployment >> << parameters.deployment >>=${AWS_ECR_URL}/<< parameters.repo >>:"${CIRCLE_BRANCH}-${CIRCLE_PREVIOUS_BUILD_NUM}"
+            # Set the image tag then ensure a rollout is triggered. Thanks to the deployment pod spec being set to always pull this should grab the latest image, even with the same tag.
+            # ref: https://stackoverflow.com/a/55914480/2631728
+            kubectl set image deployment/<< parameters.deployment >> << parameters.deployment >>=${AWS_ECR_URL}/<< parameters.repo >>:<< parameters.image_tag >>
+            kubectl rollout restart deploy << parameters.deployment >>
 
             # Check deployment rollout status every 10 seconds (max 10 minutes) until complete.
             # ref: https://www.jeffgeerling.com/blog/2018/updating-kubernetes-deployment-and-waiting-it-roll-out-shell-script
@@ -233,6 +196,8 @@ jobs:
       namespace:
         type: string
         default: "demos"
+      image_tag:
+        type: string
 
     steps:
       - kubernetes/install
@@ -290,6 +255,7 @@ workflows:
           repo: acme-demo-client
           holder_app_uuid: f1e5393d-1b69-4c5c-bc5b-5ad161c8c084
           issuer_server_url: https://issuer-api.demo.unumid.co
+          image_tag: sandbox-latest
           filters:
             tags:
               only: /^v.*/
@@ -303,6 +269,7 @@ workflows:
             - build-and-push-image-sandbox
           repo: acme-demo-client
           deployment: acme-demo-client
+          image_tag: sandbox-latest
           filters:
             tags:
               only: /^v.*/
@@ -317,7 +284,10 @@ workflows:
           context: AWS-Dev
           repo: acme-unum-demo-client
           holder_app_uuid: b8820ef7-8ae8-4fa9-9a99-84629b2ea147
-          issuer_server_url: https://unum-issuer-api.demo.dev-unumid.co
+          issuer_server_url: https://unum-issuer-api.demo.unumid.co
+          issuer_did: did:unum:5bf8de02-df74-484b-aa4f-4ee48c4ddd7c
+          image_tag: sandbox-unum-latest
+          log_rocket_id: vm6x8i/acme-unum-client-sandbox
           filters:
             tags:
               only: /^v.*/
@@ -332,6 +302,7 @@ workflows:
             - build-and-push-unum-image-sandbox
           repo: acme-unum-demo-client
           deployment: acme-unum-demo-client
+          image_tag: sandbox-unum-latest
           filters:
             tags:
               only: /^v.*/
@@ -354,6 +325,7 @@ workflows:
           repo: acme-demo-client
           holder_app_uuid: 91514d8e-b5b2-41d9-9744-3cbb2bb9a85d
           issuer_server_url: https://issuer-api.demo.dev-unumid.co
+          image_tag: dev-latest
           filters:
             branches:
               only:
@@ -364,6 +336,7 @@ workflows:
             - Slack-Context
           repo: acme-demo-client
           deployment: acme-demo-client
+          image_tag: dev-latest
           requires:
             - build-and-push-image
           filters:
@@ -381,6 +354,8 @@ workflows:
           holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
           issuer_server_url: https://unum-issuer-api.demo.dev-unumid.co
           issuer_did: did:unum:79976e0a-d878-484a-a476-924f003d31b3
+          image_tag: dev-unum-latest
+          log_rocket_id: vm6x8i/acme-unum-client-dev
           filters:
             branches:
               only:
@@ -392,6 +367,7 @@ workflows:
             - Slack-Context
           repo: acme-unum-demo-client
           deployment: acme-unum-demo-client
+          image_tag: dev-unum-latest
           requires:
             - build-and-push-unum-image
           filters:
@@ -415,6 +391,7 @@ workflows:
           repo: acme-demo-client
           holder_app_uuid: 91514d8e-b5b2-41d9-9744-3cbb2bb9a85d
           issuer_server_url: https://issuer-api.demo.dev-unumid.co
+          image_tag: test-latest
           filters:
             branches:
               only:
@@ -425,6 +402,7 @@ workflows:
             - Slack-Context
           repo: acme-demo-client
           deployment: acme-demo-client
+          image_tag: test-latest
           requires:
             - build-and-push-image-test
           filters:
@@ -441,6 +419,8 @@ workflows:
           repo: acme-unum-demo-client
           holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
           issuer_server_url: https://unum-issuer-api.demo.dev-unumid.co
+          image_tag: test-unum-latest
+          log_rocket_id: vm6x8i/acme-unum-client-dev
           filters:
             branches:
               only:
@@ -452,6 +432,7 @@ workflows:
             - Slack-Context
           repo: acme-unum-demo-client
           deployment: acme-unum-demo-client
+          image_tag: test-unum-latest
           requires:
             - build-and-push-unum-image-test
           filters:
