@@ -22,6 +22,7 @@ export const handleDeprecatedPresentationShared = (dto: DeprecatedDemoPresentati
 };
 
 export const handleAcceptedPresentationShared = (dto: DemoAcceptedPresentationDto) => async (dispatch: Dispatch): Promise<void> => {
+  // We know that the one of the credentials is the EmailCredential because we made it a required in the credential request
   const credentialSubjectString = dto.presentation.verifiableCredential.filter(credential => extractCredentialType(credential.type)[0] === 'EmailCredential')[0].credentialSubject;
   const credentialSubject = JSON.parse(credentialSubjectString);
   const email = credentialSubject.email;
