@@ -46,6 +46,10 @@ const Authentication: FC = () => {
       type: 'DemoAuthCredential',
       required: true,
       issuers: [config.issuerDid]
+    }, {
+      type: 'EmailCredential',
+      required: true,
+      issuers: [config.issuerDid]
     }];
 
     const presentationRequestOptions: DemoPresentationRequestCreateOptions = {

@@ -279,6 +279,8 @@ workflows:
       # Unum Holder
       - build-and-push-image-sandbox:
           name: "build-and-push-unum-image-sandbox"
+          requires:
+            - test
           context: AWS-Dev
           repo: acme-unum-demo-client
           holder_app_uuid: b8820ef7-8ae8-4fa9-9a99-84629b2ea147
@@ -345,6 +347,8 @@ workflows:
       # Unum Holder
       - build-and-push-image:
           name: "build-and-push-unum-image"
+          requires:
+            - test
           context: AWS-Dev
           repo: acme-unum-demo-client
           holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
@@ -410,12 +414,15 @@ workflows:
       # Unum Holder
       - build-and-push-image:
           name: "build-and-push-unum-image-test"
+          requires:
+            - test
           context: AWS-Dev
           repo: acme-unum-demo-client
           holder_app_uuid: 86810c13-47b4-4a2b-ae46-fb13b6a5177a
           issuer_server_url: https://unum-issuer-api.demo.dev-unumid.co
           image_tag: test-unum-latest
           log_rocket_id: vm6x8i/acme-unum-client-dev
+          issuer_did: did:unum:79976e0a-d878-484a-a476-924f003d31b3
           filters:
             branches:
               only:

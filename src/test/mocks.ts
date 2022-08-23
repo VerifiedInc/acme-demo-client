@@ -232,7 +232,31 @@ export const dummyAcceptedPresentation: AcceptedPresentation = {
         id: 'https://api.dev-unumid.org//credentialStatus/808befa8-cb80-41f2-a092-3a2542bde1a0',
         type: 'CredentialStatus'
       },
-      credentialSubject: '{"id":"did:unum:ab8cc239-c146-4d9d-8332-ac8182f94696","isAuthorized":true,"userUuid":"eef4db1a-1310-4a60-9ef8-9ee5fc32fe8a","userEmail":"jacob@unum.id"}',
+      credentialSubject: '{"id":"did:unum:ab8cc239-c146-4d9d-8332-ac8182f94696","isAuthorized":true}',
+      issuanceDate: new Date('2021-03-11T01:57:20.185Z'),
+      proof: {
+        created: '2021-03-11T01:57:20.187Z',
+        signatureValue: 'AN1rKvt22FJSY8NH89MENJfibsgqTbKwH7gBUqREMP6dSK8MhMUL2WX6smvEYNccVfppR1iXoycnoRos827UPTj1brEQk9h9G',
+        type: 'secp256r1Signature2020',
+        verificationMethod: 'did:unum:8af05d2e-abda-466b-a70b-7c176401f520',
+        proofPurpose: 'AssertionMethod'
+      }
+    },
+    {
+      id: '808befa8-cb80-41f2-a092-3a2542bde1a0',
+      issuer: 'did:unum:8af05d2e-abda-466b-a70b-7c176401f520',
+      type: [
+        'VerifiableCredential',
+        'EmailCredential'
+      ],
+      '@context': [
+        'https://www.w3.org/2018/credentials/v1'
+      ],
+      credentialStatus: {
+        id: 'https://api.dev-unumid.org//credentialStatus/808befa8-cb80-41f2-a092-3a2542bde1a0',
+        type: 'CredentialStatus'
+      },
+      credentialSubject: '{"id":"did:unum:ab8cc239-c146-4d9d-8332-ac8182f94696","isAuthorized":true,"email":"jacob@unum.id"}',
       issuanceDate: new Date('2021-03-11T01:57:20.185Z'),
       proof: {
         created: '2021-03-11T01:57:20.187Z',

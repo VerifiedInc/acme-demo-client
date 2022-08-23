@@ -13,6 +13,7 @@ import {
 import { PresentationActionType } from '../actionTypes/presentation';
 import { login } from './auth';
 import { DemoAcceptedPresentationDto, DemoDeclinedPresentationDto } from '../../types';
+import { extractCredentialType } from '../../utils/extractCredentialType';
 
 export const handleDeprecatedPresentationShared = (dto: DeprecatedDemoPresentationDto) => async (dispatch: Dispatch): Promise<void> => {
   const email = dto.presentation.verifiableCredentials[0].credentialSubject.userEmail;
@@ -21,9 +22,10 @@ export const handleDeprecatedPresentationShared = (dto: DeprecatedDemoPresentati
 };
 
 export const handleAcceptedPresentationShared = (dto: DemoAcceptedPresentationDto) => async (dispatch: Dispatch): Promise<void> => {
-  const credentialSubjectString = dto.presentation.verifiableCredential[0].credentialSubject;
+  // We know that the one of the credentials is the EmailCredential because we made it a required in the credential request
+  const credentialSubjectString = dto.presentation.verifiableCredential.filter(credential => extractCredentialType(credential.type)[0] === 'EmailCredential')[0].credentialSubject;
   const credentialSubject = JSON.parse(credentialSubjectString);
-  const email = credentialSubject.userEmail;
+  const email = credentialSubject.email;
   await login({ email, password: 'password' })(dispatch);
   dispatch({ type: PresentationActionType.PRESENTATION_SHARED_SUCCESS, payload: dto });
 };
