@@ -195,7 +195,7 @@ jobs:
         type: string
       namespace:
         type: string
-        default: "demos"
+        default: "default"
       image_tag:
         type: string
 
