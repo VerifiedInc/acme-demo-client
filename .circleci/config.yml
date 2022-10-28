@@ -398,6 +398,7 @@ workflows:
               only:
                 - test-circleci
       - deploy-image:
+          name: "deploy-image-test"
           context: 
             - AWS-Dev
             - Slack-Context
