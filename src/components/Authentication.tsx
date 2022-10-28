@@ -146,6 +146,7 @@ const Authentication: FC = () => {
             userInfo={userInfo || undefined}
             createInitialPresentationRequest={false}
             userCode={loggedInUser?.userCode}
+            notUsingUnumWebWalletHolderApp
           />
         </ContentBox>
       </MainContent>
