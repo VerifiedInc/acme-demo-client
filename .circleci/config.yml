@@ -67,6 +67,9 @@ jobs:
         type: string
       image_tag:
         type: string
+      using_web_wallet:
+        type: boolean
+        default: false
 
     steps:
       - checkout
@@ -82,7 +85,7 @@ jobs:
             echo Logging in to Amazon ECR...
             $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
             echo Building the Docker image...
-            DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg API_KEY=${DEV_API_KEY} --build-arg ISSUER_SERVER_URL=<< parameters.issuer_server_url >> --build-arg ENV=<< parameters.env >> --build-arg VERIFIER_SERVER_URL=<< parameters.verifier_server_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> --build-arg LOG_ROCKET_ID=<< parameters.log_rocket_id >> --build-arg HOLDER_APP_UUID=<< parameters.holder_app_uuid >> -t ${CIRCLE_SHA1} .
+            DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg API_KEY=${DEV_API_KEY} --build-arg ISSUER_SERVER_URL=<< parameters.issuer_server_url >> --build-arg ENV=<< parameters.env >> --build-arg VERIFIER_SERVER_URL=<< parameters.verifier_server_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> --build-arg LOG_ROCKET_ID=<< parameters.log_rocket_id >> --build-arg HOLDER_APP_UUID=<< parameters.holder_app_uuid >> --build-arg USING_WEB_WALLET=<< parameters.using_web_wallet >> -t ${CIRCLE_SHA1} .
             docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:<< parameters.image_tag >>
             docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:"${CIRCLE_BRANCH}-${CIRCLE_BUILD_NUM}"
             echo Pushing the Docker image...
@@ -115,6 +118,9 @@ jobs:
         type: string
       image_tag:
         type: string
+      using_web_wallet:
+        type: boolean
+        default: false
 
     steps:
       - checkout
@@ -129,7 +135,7 @@ jobs:
             echo Logging in to Amazon ECR...
             $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
             echo Building the Docker image...
-            DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg API_KEY=${SANDBOX_API_KEY} --build-arg ISSUER_SERVER_URL=<< parameters.issuer_server_url >> --build-arg ENV=<< parameters.env >> --build-arg VERIFIER_SERVER_URL=<< parameters.verifier_server_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> --build-arg LOG_ROCKET_ID=<< parameters.log_rocket_id >> --build-arg HOLDER_APP_UUID=<< parameters.holder_app_uuid >> -t ${CIRCLE_SHA1} .
+            DOCKER_BUILDKIT=1 docker build --ssh github="$HOME/.ssh/id_rsa" --build-arg API_KEY=${SANDBOX_API_KEY} --build-arg ISSUER_SERVER_URL=<< parameters.issuer_server_url >> --build-arg ENV=<< parameters.env >> --build-arg VERIFIER_SERVER_URL=<< parameters.verifier_server_url >> --build-arg ISSUER_DID=<< parameters.issuer_did >> --build-arg LOG_ROCKET_ID=<< parameters.log_rocket_id >> --build-arg HOLDER_APP_UUID=<< parameters.holder_app_uuid >> --build-arg USING_WEB_WALLET=<< parameters.using_web_wallet >> -t ${CIRCLE_SHA1} .
             docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:sandbox-latest
             docker tag ${CIRCLE_SHA1} << parameters.reg >>/<< parameters.repo >>:sandbox-"${CIRCLE_TAG}"
             echo Pushing the Docker image...
@@ -288,6 +294,7 @@ workflows:
           issuer_did: did:unum:5bf8de02-df74-484b-aa4f-4ee48c4ddd7c
           image_tag: sandbox-unum-latest
           log_rocket_id: vm6x8i/acme-unum-client-sandbox
+          using_web_wallet: true
           filters:
             tags:
               only: /^v.*/
@@ -356,6 +363,7 @@ workflows:
           issuer_did: did:unum:79976e0a-d878-484a-a476-924f003d31b3
           image_tag: dev-unum-latest
           log_rocket_id: vm6x8i/acme-unum-client-dev
+          using_web_wallet: true
           filters:
             branches:
               only:
@@ -424,6 +432,7 @@ workflows:
           image_tag: test-unum-latest
           log_rocket_id: vm6x8i/acme-unum-client-dev
           issuer_did: did:unum:79976e0a-d878-484a-a476-924f003d31b3
+          using_web_wallet: true
           filters:
             branches:
               only:

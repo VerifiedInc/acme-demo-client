@@ -8,6 +8,7 @@ interface Config {
   apiKey: string;
   logRocketId: string;
   holderAppUuid: string;
+  usingWebWallet: boolean;
 }
 
 const {
@@ -17,7 +18,8 @@ const {
   REACT_APP_ENV = 'development',
   REACT_APP_API_KEY = '',
   REACT_APP_LOG_ROCKET_ID = '',
-  REACT_APP_HOLDER_APP_UUID = ''
+  REACT_APP_HOLDER_APP_UUID = '',
+  REACT_APP_USING_WEB_WALLET = ''
 } = process.env;
 
 export const config: Config = {
@@ -27,7 +29,8 @@ export const config: Config = {
   env: REACT_APP_ENV as SaasEnvironment,
   apiKey: REACT_APP_API_KEY,
   logRocketId: REACT_APP_LOG_ROCKET_ID,
-  holderAppUuid: REACT_APP_HOLDER_APP_UUID
+  holderAppUuid: REACT_APP_HOLDER_APP_UUID,
+  usingWebWallet: REACT_APP_USING_WEB_WALLET === 'true'
 };
 
 console.log('config', config);
